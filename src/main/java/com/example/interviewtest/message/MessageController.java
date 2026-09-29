@@ -1,6 +1,12 @@
 package com.example.interviewtest.message;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.transaction.Transactional;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -91,4 +97,49 @@ public class MessageController {
 
     public record MessageResponse(Long id, String status, String priority, Instant createdAt) {}
 
+    @Entity(name = "MessageRow")
+    @Table(name = "messages")
+    public static class MessageRow {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        Long id;
+
+        @Column(nullable = false)
+        String sender;
+
+        @Column(nullable = false)
+        String recipient;
+
+        @Column(nullable = false)
+        String body;
+
+        @Column(nullable = false)
+        String priority;
+
+        @Column(nullable = false)
+        String status;
+
+        @Column(nullable = false)
+        Instant createdAt;
+    }
+
+    @Entity
+    @Table(name = "message_deliveries")
+    public static class DeliveryRow {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        Long id;
+
+        @Column(nullable = false)
+        Long messageId;
+
+        @Column(nullable = false)
+        String recipient;
+
+        @Column(nullable = false)
+        String status;
+
+        @Column(nullable = false)
+        Instant createdAt;
+    }
 }
